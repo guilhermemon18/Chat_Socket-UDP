@@ -26,8 +26,12 @@ public class Registrador implements Runnable{
 		this.distribuidor = distribuidor;
 		this.serverSocket = serverSocket;
 		this.clients = new LinkedList<User>();
-		this.distribuidor = new Distribuidor(clients);
+		this.distribuidor = new Distribuidor(clients,serverSocket);
 		this.nextId = 1;
+
+//		Receptor receptor = new Receptor(serverSocket,this.distribuidor);
+//		Thread pilha = new Thread(receptor);
+//		pilha.start();
 	}
 
 	public Registrador(DatagramSocket serverSocket) {
@@ -70,54 +74,70 @@ public class Registrador implements Runnable{
 				ByteArrayInputStream in = new ByteArrayInputStream(data);
 				ObjectInputStream is = new ObjectInputStream(in);
 				String nomeClient = null;
-				
-				
+				Pacote client = null;
+
 				try {
-					Pacote client = (Pacote) is.readObject();
+					client = (Pacote) is.readObject();
 					nomeClient = client.getMessage().toString();
-					System.out.println("Client object received = "+ client);
+					System.out.println("Client object received to save: = "+ client);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 
+				if(client.getTipo().equals(MessageType.NAME)) {//Pacote.MessageType.Name;
+					//Ele está devolvendo para o carinha que entrou em contato com o servidor, uma MSG para ele, pode ser o PACOTE.
+					//Neste caso vai mandar o IP dele para ele.
+					InetAddress IPAddress = incomingPacket.getAddress();
+					int port = incomingPacket.getPort();
+					Pacote id = new Pacote(nextId,nextId,MessageType.ID);
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					ObjectOutputStream os = new ObjectOutputStream(outputStream);
+					os.writeObject(id);
+					data = outputStream.toByteArray();
+					DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, port);
+					serverSocket.send(sendPacket);
+					//envia o ID para quem se conectou no servidor!
 
-				//Ele está devolvendo para o carinha que entrou em contato com o servidor, uma MSG para ele, pode ser o PACOTE.
-				//Neste caso vai mandar o IP dele para ele.
-				InetAddress IPAddress = incomingPacket.getAddress();
-				int port = incomingPacket.getPort();
-				Pacote id = new Pacote(nextId,nextId,MessageType.ID);
-				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-				ObjectOutputStream os = new ObjectOutputStream(outputStream);
-				os.writeObject(id);
-				data = outputStream.toByteArray();
-				DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, port);
-				serverSocket.send(sendPacket);
-				//envia o ID para quem se conectou no servidor!
-
-
-				//provavelmente será aqui o controle dos clientes conectados, aqui ele pega uma nova conexão com o socket e cria emissores e receptores para ela.
-
-
-				Receptor receptor = new Receptor(this.distribuidor);
-				Thread pilha = new Thread(receptor);
-				pilha.start();
-				Emissor emissor = new Emissor(IPAddress,this.nextId);
-
-				clients.add(new User(this.nextId++, nomeClient,port));//adiciona o novo cliente a lista de clientes do server.
-
-				this.distribuidor.adicionaEmissor(emissor);
+					System.out.println("Id do cliente: " + nextId);
+					//provavelmente será aqui o controle dos clientes conectados, aqui ele pega uma nova conexão com o socket e cria emissores e receptores para ela.
 
 
-				for (User user : clients) {
-					System.out.println(user);
+					//				Receptor receptor = new Receptor(serverSocket,this.distribuidor);
+					//				Thread pilha = new Thread(receptor);
+					//				pilha.start();
+					//				Emissor emissor = new Emissor(serverSocket,IPAddress,this.nextId);
+
+					clients.add(new User(this.nextId++, nomeClient,port,IPAddress));//adiciona o novo cliente a lista de clientes do server.
+
+					//this.distribuidor.adicionaEmissor(emissor);
+
+
+					for (User user : clients) {
+						System.out.println(user);
+					}
+					//porcaria de java, não está entendendo que é para mandar a lista atualizada, tá com problemas na lista que ele manda.
+					List<User> teste = new LinkedList<User>(clients);
+
+					this.distribuidor.distribuiMensagem(new Pacote(teste));
+
+
+				}else {
+					System.out.println("Entrou enviar msg all!");
+//					for (User user : clients) {
+//						System.out.println(user);
+//						InetAddress IPAddress = user.getIPAddress();
+//						int port = user.getPort();
+//						Pacote id = (Pacote) client;
+//						ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//						ObjectOutputStream os = new ObjectOutputStream(outputStream);
+//						os.writeObject(id);
+//						data = outputStream.toByteArray();
+//						DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, port);
+//						serverSocket.send(sendPacket);
+//					}
+					
+					this.distribuidor.distribuiMensagem(client);
 				}
-				//porcaria de java, não está entendendo que é para mandar a lista atualizada, tá com problemas na lista que ele manda.
-				List<User> teste = new LinkedList<User>(clients);
-
-				this.distribuidor.distribuiMensagem(new Pacote(teste));
-
-
-
 
 			} catch (IOException e) {
 				System.out.println("ERRO");

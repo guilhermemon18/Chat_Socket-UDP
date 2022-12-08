@@ -59,7 +59,7 @@ public class ReceptorDeMensagem implements Runnable {
 				ObjectInputStream is = new ObjectInputStream(in);
 				
 				mensagem = (Pacote) is.readObject();
-				System.out.println("Message object received = "+ mensagem);
+				System.out.println("Message object received in Receptor de Mensagem= "+ mensagem);
 				//mensagem = null;//debug
 			} catch (IOException | ClassNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -68,8 +68,6 @@ public class ReceptorDeMensagem implements Runnable {
 			}	
 			//System.out.println("Recebencdo MSG " + mensagem);
 			if(mensagem != null) {
-
-
 
 				if(mensagem.getTipo().equals(MessageType.GETUSERS)) {
 					System.out.println("Recebendo lista de usuuários conectados no receptor de msgs!");
@@ -115,7 +113,7 @@ public class ReceptorDeMensagem implements Runnable {
 					}
 
 					if(mensagem.getTipo().equals(MessageType.DISCONNET)) {
-						this.telaChat.adicionaMensagem(mensagem.getMessage().toString());
+						this.telaChat.adicionaMensagem(mensagem.getMessage().toString() + "\n");
 						this.telaChat.desconectaConversaPrivada(mensagem);
 					}
 

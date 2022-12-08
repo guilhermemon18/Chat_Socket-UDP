@@ -26,13 +26,8 @@ public class Receptor implements Runnable {
 		this.incomingData = new byte[20048];
 	}
 	
-	public Receptor(Distribuidor distribuidor) throws SocketException {
-		this(new DatagramSocket(),distribuidor);
-	}
-	
 
 	
-
 	public void run() {
 		while (true){
 			

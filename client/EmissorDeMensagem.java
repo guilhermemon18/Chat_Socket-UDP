@@ -34,7 +34,7 @@ public class EmissorDeMensagem {
 //		socket.send(sendPacket);
 //		System.out.println("Message sent from client");
 		
-		
+		System.out.println("Enviando mensagem do client ");
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ObjectOutputStream os = new ObjectOutputStream(outputStream);
 		os.writeObject(mensagem);
