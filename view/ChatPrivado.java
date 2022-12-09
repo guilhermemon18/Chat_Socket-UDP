@@ -80,12 +80,6 @@ public class ChatPrivado extends JDialog{
 		this.panel = new JPanel();
 		this.fieldChat = new JTextArea(10, 60);
 		
-//		fieldChat.addComponentListener(new ComponentAdapter() {
-//			@Override
-//			public void componentResized(ComponentEvent e) {
-//				ChatPrivado.this.fieldChat.setFont(new Font("monospaced", 25,25));
-//			}
-//		});
 		this.fieldChat.setEditable(false);
 		this.scrollPane = new JScrollPane(this.fieldChat);
 

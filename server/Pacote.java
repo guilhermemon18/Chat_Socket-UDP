@@ -1,10 +1,8 @@
 package server;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
@@ -189,11 +187,5 @@ public class Pacote implements Serializable {
 		
 	}
 	
-	public  byte[] getBytes() throws IOException {
-	    ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    ObjectOutputStream os = new ObjectOutputStream(out);
-	    os.writeObject(this);
-	    return out.toByteArray();
-	}
 	
 }

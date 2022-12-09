@@ -2,13 +2,12 @@ package server;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.net.ServerSocket;
 
 public class Server {
 
 	private Distribuidor distribuidor;
 	private Registrador registrador;
-	private DatagramSocket serverSocket;
+	//private DatagramSocket serverSocket;
 	
 	
 	//Constrói o server para rodar.
@@ -16,7 +15,7 @@ public class Server {
 	 * public Server() throws IOException { super(); distribuidor = new
 	 * Distribuidor();
 	 * 
-	 * serverSocket = new ServerSocket(10000);
+	 * serverSocket = new ServerSocket(9876);
 	 * 
 	 * //O registrador ele já tem o serversocket lá nele,então dá para acessar por
 	 * lá. registrador = new Registrador(distribuidor, serverSocket); Thread pilha =

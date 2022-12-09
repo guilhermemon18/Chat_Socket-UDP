@@ -1,4 +1,4 @@
-package server;
+package exemplonet;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,6 +10,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.time.LocalTime;
+
+import server.Pacote;
 
 public class UDPSocketServer {
 	private DatagramSocket socket = null;

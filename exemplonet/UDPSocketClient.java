@@ -1,4 +1,4 @@
-package client;
+package exemplonet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

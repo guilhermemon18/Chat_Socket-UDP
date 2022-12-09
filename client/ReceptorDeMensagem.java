@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.List;
 
 import server.Pacote;
@@ -20,35 +21,17 @@ public class ReceptorDeMensagem implements Runnable {
 
 
 
-	public ReceptorDeMensagem(DatagramSocket socket, Chat telaChat) {
+	public ReceptorDeMensagem(DatagramSocket socket, Chat telaChat) throws SocketException {
 		this.socket = socket;
 		this.telaChat = telaChat;
 		this.incomingData = new byte[20048];
+		this.incomingData = new byte[socket.getReceiveBufferSize()];
 	}
 
 
 	public void run() {
 		while (true ){//enquanto a entrada tiver mensagem ele obtem a msg e coloca na tela do chat, funciona bem para o chat global.
-			
-//			while(true) {
-//				DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
-//				try {
-//					socket.receive(incomingPacket);
-//					String response = new String(incomingPacket.getData());
-//					System.out.println("Response from server:" + response);
-//
-//					Thread.sleep(2000);
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//					break;
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			
-//				}
-			
+						
 			Pacote mensagem = null;
 			DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
 
@@ -63,7 +46,7 @@ public class ReceptorDeMensagem implements Runnable {
 				//mensagem = null;//debug
 			} catch (IOException | ClassNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 				break;
 			}	
 			//System.out.println("Recebencdo MSG " + mensagem);
@@ -95,11 +78,6 @@ public class ReceptorDeMensagem implements Runnable {
 						this.telaChat.adicionaMensagem(newMessage);
 					}
 
-
-					//				if(mensagem.getTipo().equals(MessageType.GETUSERS)) {
-					//					telaChat.setUsers((List<User>) mensagem.getMessage());
-					//					System.out.println("SEtando os usu[arios na tela!");
-					//				}
 
 					if(mensagem.getTipo().equals(MessageType.ID)) {
 						System.out.println("Setando o ID do cliente: "+ mensagem.getMessage());

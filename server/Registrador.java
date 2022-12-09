@@ -74,17 +74,17 @@ public class Registrador implements Runnable{
 				ByteArrayInputStream in = new ByteArrayInputStream(data);
 				ObjectInputStream is = new ObjectInputStream(in);
 				String nomeClient = null;
-				Pacote client = null;
+				Pacote pacote = null;
 
 				try {
-					client = (Pacote) is.readObject();
-					nomeClient = client.getMessage().toString();
-					System.out.println("Client object received to save: = "+ client);
+					pacote = (Pacote) is.readObject();
+					nomeClient = pacote.getMessage().toString();
+					System.out.println("Client object received to save: = "+ pacote);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 
-				if(client.getTipo().equals(MessageType.NAME)) {//Pacote.MessageType.Name;
+				if(pacote.getTipo().equals(MessageType.NAME)) {//Pacote.MessageType.Name;
 					//Ele está devolvendo para o carinha que entrou em contato com o servidor, uma MSG para ele, pode ser o PACOTE.
 					//Neste caso vai mandar o IP dele para ele.
 					InetAddress IPAddress = incomingPacket.getAddress();
@@ -105,20 +105,15 @@ public class Registrador implements Runnable{
 					//				Receptor receptor = new Receptor(serverSocket,this.distribuidor);
 					//				Thread pilha = new Thread(receptor);
 					//				pilha.start();
-					//				Emissor emissor = new Emissor(serverSocket,IPAddress,this.nextId);
 
 					clients.add(new User(this.nextId++, nomeClient,port,IPAddress));//adiciona o novo cliente a lista de clientes do server.
-
-					//this.distribuidor.adicionaEmissor(emissor);
-
-
 					for (User user : clients) {
 						System.out.println(user);
 					}
 					//porcaria de java, não está entendendo que é para mandar a lista atualizada, tá com problemas na lista que ele manda.
-					List<User> teste = new LinkedList<User>(clients);
+					//List<User> teste = new LinkedList<User>(clients);
 
-					this.distribuidor.distribuiMensagem(new Pacote(teste));
+					this.distribuidor.distribuiMensagem(new Pacote(clients));
 
 
 				}else {
@@ -136,7 +131,7 @@ public class Registrador implements Runnable{
 //						serverSocket.send(sendPacket);
 //					}
 					
-					this.distribuidor.distribuiMensagem(client);
+					this.distribuidor.distribuiMensagem(pacote);
 				}
 
 			} catch (IOException e) {

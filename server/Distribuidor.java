@@ -6,15 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import server.Pacote.MessageType;
 
 /*Na aplicação servidora, deve existir um objeto da classe DISTRIBUIDOR que tem como
-tarefa receber as mensagens dos receptores e repassá-las para os emissores.*/
+tarefa receber as mensagens dos receptores e repassá-las para os users.*/
 public class Distribuidor{
 
 	private DatagramSocket serverSocket;
@@ -30,10 +28,6 @@ public class Distribuidor{
 		this.serverSocket = serverSocket;
 	}
 
-	public List<User> getUsers() {
-		return users;
-	}
-	
 	private void  removeUser(User u) {
 		this.users.remove(u);
 	}
@@ -42,6 +36,7 @@ public class Distribuidor{
 	public void distribuiMensagem(Object mensagem) throws IOException {
 		Pacote msg = (Pacote) mensagem;
 		
+		//se pedir para desconectar, então remove da lista de usuários e manda a nova lista de clientes conectados para todos os users.
 		if(msg.getTipo().equals(MessageType.DISCONNET)) {
 			System.out.println("Entrou desconectar um cliente!");
 			removeUser(new User(msg.getIdOrigem(),null));
@@ -50,7 +45,7 @@ public class Distribuidor{
 		}
 		
 
-		
+		//Compartilha a msg para todos os usuários conectados!
 		for (User user : users) {
 			byte[] data;
 			InetAddress IPAddress = user.getIPAddress();
