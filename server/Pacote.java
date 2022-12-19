@@ -191,8 +191,6 @@ public class Pacote implements Serializable {
 		/** Decripitar texto da mensagem aqui **/
 		AES aes = new AES();
 		String aux  = aes.Decriptar(this.mensagem.toString(), nomeOrigem);
-		System.err.println(nomeOrigem);
-		System.err.println(nomeDestino);
 		System.out.println("Mensagem decriptografada: " + aux);
 		
 		return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + aux;
