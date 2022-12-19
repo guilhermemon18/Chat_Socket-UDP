@@ -15,11 +15,11 @@ import view.Chat;
 public class Client {
 
 	//Componentes do cliente:
-	private DatagramSocket  socket;		// aqui está a conexão que deve ser encerrada ao terminar o chat.
+	private DatagramSocket  socket;		// aqui estÃ¡ a conexÃ£o que deve ser encerrada ao terminar o chat.
 	private InetAddress IPAddress;
 	private EmissorDeMensagem emissor;	//emissor de msg
-	private Chat telaChat;				//tela para visualizar as ações
-	private ReceptorDeMensagem receptor;//receptor para receber as informações e setar na tela.
+	private Chat telaChat;				//tela para visualizar as aÃ§Ãµes
+	private ReceptorDeMensagem receptor;//receptor para receber as informaÃ§Ãµes e setar na tela.
 	private Thread pilha;				//a thread para que flua.
 	private JTextField txtNome;
 
@@ -38,7 +38,7 @@ public class Client {
 	//construtor do cliente.
 	public Client() throws UnknownHostException, IOException {
 		JLabel lblMessage = new JLabel("Criando Cliente!");
-		//txtIP = new JTextField();
+		IPAddress = InetAddress.getByName("localhost");
 		JLabel lblinserirnome = new JLabel("Insira o nome!");
 		txtNome = new JTextField();
 		Object[] texts = {lblMessage, lblinserirnome, txtNome };
