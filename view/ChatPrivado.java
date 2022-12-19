@@ -26,13 +26,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import client.EmissorDeMensagem;
+import server.AES;
 import server.Pacote;
 
 public class ChatPrivado extends JDialog{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private final String nomeOrigem;
 	private final Integer idOrigem;
@@ -53,6 +51,7 @@ public class ChatPrivado extends JDialog{
 	private JPanel panel_3;
 	private JLabel lblchatGeral;
 
+	//Construtor
 	public ChatPrivado (Window window, EmissorDeMensagem emissor, String nomeOrigem,Integer idOrigem, String nomeDestino, Integer idDestino, Chat chat) {
 		super(window);
 		this.nomeOrigem = nomeOrigem;
@@ -171,7 +170,7 @@ public class ChatPrivado extends JDialog{
 	}
 
 
-
+	// Adiciona mensagem a tela do chat privado
 	public void adicionaMensagem(String mensagem) {
 		String[] aux = mensagem.split(" ");
 		if(aux[0].equalsIgnoreCase(nomeOrigem)) {
@@ -182,11 +181,22 @@ public class ChatPrivado extends JDialog{
 
 
 	}
-
+	
+	// Envia mensagem ao chat privado e antes criptografa a mensagem
 	private void enviarMensagem() throws IOException {//arrumar isso ainda.
 		LocalTime agora = LocalTime.now();
 
 		String msg = textField.getText();
+		
+		/**
+		 * criptografando a mensagem
+		 */
+		AES aes = new AES();
+		String auxMsg = aes.Encriptar(msg,this.nomeOrigem);
+		msg = auxMsg;
+		System.out.println("Chat privado - Mensagem criptografada: " + msg);
+		
+		
 		Pacote p = new Pacote(this.idOrigem,this.idDestino,this.nomeOrigem,this.nomeDestino,msg,agora);//new Pacote(this.idOrigem, this.nomeOrigem, msg, agora);
 		System.out.println("enviando msg do cliente: " + p.getMessage());
 		emissorDeMensagem.envia(p);

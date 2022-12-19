@@ -32,6 +32,7 @@ import javax.swing.text.StyleContext;
 
 import client.Client;
 import client.EmissorDeMensagem;
+import server.AES;
 import server.Pacote;
 import server.User;
 
@@ -58,6 +59,7 @@ public class Chat {
 	private JLabel lblchatGeral;
 	private JButton btnChatPrivado;
 
+	//Construtor
 	public Chat(EmissorDeMensagem emissor, String nome, Client client) {
 		this.nome = nome;
 		this.emissorDeMensagem = emissor;
@@ -212,6 +214,7 @@ public class Chat {
 		tp.replaceSelection(txt);
 	}
 
+	// Adiciona mensagens pra exibir na tela do chat
 	public void adicionaMensagem(String mensagem) {
 		/*
 		 * String[] aux = mensagem.split(" "); if(aux[0].equalsIgnoreCase(nome)) {
@@ -222,10 +225,22 @@ public class Chat {
 
 	}
 
-	private void enviarMensagem() throws IOException {//arrumar isso ainda.
+	// Envia mensagem ao emissor e faz a criptografia da mensagem antes de enviar
+	private void enviarMensagem() throws IOException {
 		LocalTime agora = LocalTime.now();
 
 		String msg = textField.getText();
+		
+		System.out.println("Mensagem original: " + msg);
+		/**
+		 * criptografo a mensagem
+		 */
+		AES aes = new AES();
+		String auxMsg = aes.Encriptar(msg,this.nome);
+		msg = auxMsg;
+		System.out.println("Mensagem criptografada: " + msg);		
+		
+		//Enviando mensagem
 		Pacote p = new Pacote(this.id, this.nome, msg, agora);
 		System.out.println("enviando msg do cliente: " + p.getMessage());
 		emissorDeMensagem.envia(p);
@@ -241,6 +256,7 @@ public class Chat {
 		textField.setText("");
 	}
 
+	// Encerra o chat desconectando o cliente
 	private void encerrarChat() throws IOException {
 		LocalTime agora = LocalTime.now();
 		Pacote p = new Pacote(this.id,this.nome,agora);
@@ -273,7 +289,7 @@ public class Chat {
 		}
 	}
 
-	//adiciona uma MSG privada á conversa privada aberta ou abre uma nova janela para tal conversa se n existir.
+	//Adiciona uma MSG privada á conversa privada aberta ou abre uma nova janela para tal conversa se n existir.
 	public void adicionaMSGPrivada(Pacote p) {
 		Integer idDestino = p.getIdDestino();
 		Integer idOrigem = p.getIdOrigem();
@@ -298,10 +314,12 @@ public class Chat {
 		this.chats.add(aux);
 	}
 
+	// Remove chat privado
 	public void removeConversaPrivada(ChatPrivado c) {
 		this.chats.remove(c);
 	}
 
+	// Desconecta chats privados
 	public void desconectaConversaPrivada(Pacote p) {
 		for (ChatPrivado chatPrivado : chats) {
 			if(chatPrivado.getIdDestino().equals(p.getIdOrigem())) {
