@@ -15,11 +15,11 @@ import view.Chat;
 public class Client {
 
 	//Componentes do cliente:
-	private DatagramSocket  socket;		// aqui estÃ¡ a conexÃ£o que deve ser encerrada ao terminar o chat.
+	private DatagramSocket  socket;		// aqui está a conexão que deve ser encerrada ao terminar o chat.
 	private InetAddress IPAddress;
 	private EmissorDeMensagem emissor;	//emissor de msg
-	private Chat telaChat;				//tela para visualizar as aÃ§Ãµes
-	private ReceptorDeMensagem receptor;//receptor para receber as informaÃ§Ãµes e setar na tela.
+	private Chat telaChat;				//tela para visualizar as ações
+	private ReceptorDeMensagem receptor;//receptor para receber as informações e setar na tela.
 	private Thread pilha;				//a thread para que flua.
 	private JTextField txtNome;
 
@@ -52,7 +52,7 @@ public class Client {
 		pilha.start();
 
 	}
-
+	
 	public void fecharChat() throws IOException {
 		socket.close();
 	}
@@ -64,8 +64,9 @@ public class Client {
 	public static void main(String[] args)  {
 		try {
 			//Novos clientes
-			new Client("Guilherme");
-			new Client("Gisele");
+			//new Client("Guilherme");
+			//new Client("Gisele");
+			new Client();
 
 			System.out.println("Creating the client");
 						
