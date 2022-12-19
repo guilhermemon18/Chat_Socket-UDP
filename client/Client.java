@@ -14,14 +14,13 @@ import view.Chat;
 
 public class Client {
 
-	
 	//Componentes do cliente:
-	private DatagramSocket  socket;// aqui está a conexão que deve ser encerrada ao terminar o chat.
+	private DatagramSocket  socket;		// aqui está a conexão que deve ser encerrada ao terminar o chat.
 	private InetAddress IPAddress;
-	private EmissorDeMensagem emissor;//emissor de msg
-	private Chat telaChat;//tela para visualizar as ações
+	private EmissorDeMensagem emissor;	//emissor de msg
+	private Chat telaChat;				//tela para visualizar as ações
 	private ReceptorDeMensagem receptor;//receptor para receber as informações e setar na tela.
-	private Thread pilha;//a thread para que flua.
+	private Thread pilha;				//a thread para que flua.
 	private JTextField txtNome;
 
 	//construtor do cliente.
@@ -63,14 +62,11 @@ public class Client {
 	}
 
 	public static void main(String[] args)  {
-
-		
-		
 		try {
-			new Client("Guilherme");//new Client("Guilherme");
-//							  new Client("Vanessa");
-//							 new Client("Leontina");
-//							 new Client("Gisele");
+			//Novos clientes
+			new Client("Guilherme");
+			new Client("Gisele");
+
 			System.out.println("Creating the client");
 						
 		} catch (IOException e) {

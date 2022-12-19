@@ -7,20 +7,23 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-/*Na aplicação cliente, deve existir um objeto da classe EMISSORDEMENSAGEM que envia
-as mensagens digitadas pelo usuário para a aplicação servidora.*/
+/*
+Na aplicação cliente, deve existir um objeto da classe EMISSORDEMENSAGEM que envia
+as mensagens digitadas pelo usuário para a aplicação servidora.
+*/
 public class EmissorDeMensagem {
 
 	private InetAddress IPAddress;
 	private DatagramSocket socket;
 	
+	//Construtor 
 	public EmissorDeMensagem(DatagramSocket socket,InetAddress IPAdress ) {
 		this.socket = socket;
 		this.IPAddress = IPAdress;
 	}
 
+	//Envia mensagem
 	public void envia(Object mensagem) throws IOException {
-		
 		System.out.println("Enviando mensagem do client ");
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ObjectOutputStream os = new ObjectOutputStream(outputStream);

@@ -19,8 +19,7 @@ public class ReceptorDeMensagem implements Runnable {
 	private Chat telaChat;
 	private byte[] incomingData;
 
-
-
+	//Construtor
 	public ReceptorDeMensagem(DatagramSocket socket, Chat telaChat) throws SocketException {
 		this.socket = socket;
 		this.telaChat = telaChat;
@@ -84,7 +83,8 @@ public class ReceptorDeMensagem implements Runnable {
 						System.out.println("Merda do Id: " + mensagem.getMessage().toString());
 						telaChat.setId((Integer) mensagem.getMessage());
 					}
-					//conversa privada entre uma pessoa e outra.
+					
+					//Conversa privada entre uma pessoa e outra.
 					if(mensagem.getTipo().equals(MessageType.PRIVATE) && mensagem.getIdDestino().equals(this.telaChat.getId())) {
 
 						telaChat.adicionaMSGPrivada(mensagem);
