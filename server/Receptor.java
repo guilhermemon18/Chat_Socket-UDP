@@ -6,19 +6,18 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-/*Para o ServerSocket deve ser criado um objeto da classe RECEPTOR.
+/*
+Para o ServerSocket deve ser criado um objeto da classe RECEPTOR.
 A tarefa de um objeto da classe RECEPTOR é aguardar as mensagens enviadas pelos
-usuários.*/
+usuários.
+*/
 public class Receptor implements Runnable {
 
-	/**
-	 * 
-	 */
-	
 	private DatagramSocket serverSocket;
 	private byte[] incomingData;
 	private Distribuidor distribuidor;
 
+	//Construtor
 	public Receptor(DatagramSocket socket, Distribuidor distribuidor) {
 		this.distribuidor = distribuidor;
 		this.serverSocket = socket;
@@ -26,11 +25,9 @@ public class Receptor implements Runnable {
 	}
 	
 
-	
 	public void run() {
 		while (true){
-			
-			
+					
 			Pacote mensagem = null;
 			DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
 
@@ -48,8 +45,6 @@ public class Receptor implements Runnable {
 				e.printStackTrace();
 				break;
 			}	
-			
-
 		}
 	}	
 }

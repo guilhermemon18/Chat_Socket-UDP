@@ -13,8 +13,10 @@ import java.util.List;
 
 import server.Pacote.MessageType;
 
-/*Na aplicação servidora, um objeto registrador deve esperar novos usuários do chat 
-e realizar todo processo de registro de novos usuários quando alguém chegar.*/
+/*
+Na aplicação servidora, um objeto registrador deve esperar novos usuários do chat 
+e realizar todo processo de registro de novos usuários quando alguém chegar.
+*/
 public class Registrador implements Runnable{
 
 	private Distribuidor distribuidor;
@@ -22,6 +24,7 @@ public class Registrador implements Runnable{
 	private List<User> clients;
 	private Integer nextId;
 
+	//Construtor
 	public Registrador(Distribuidor distribuidor, DatagramSocket serverSocket) {
 		this.distribuidor = distribuidor;
 		this.serverSocket = serverSocket;
@@ -114,8 +117,6 @@ public class Registrador implements Runnable{
 					//List<User> teste = new LinkedList<User>(clients);
 
 					this.distribuidor.distribuiMensagem(new Pacote(clients));
-
-
 				}else {
 					System.out.println("Entrou enviar msg all!");
 //					for (User user : clients) {
