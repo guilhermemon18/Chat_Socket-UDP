@@ -1,0 +1,13 @@
+Filtros de busca
+
+UDP
+ip.dst_host && udp.dstport == 9876
+*ip vai aparecer 127.0.0.1 loopback
+
+
+
+TCP
+ip.dst_host && tcp.port == 10000
+
+ip.dst ==  192.168.15.4 && tcp.port == 10000
+*mudar no codigo de localhost para o ip da sua maquina, na classe client
